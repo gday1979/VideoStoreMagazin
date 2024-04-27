@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebVideoStore", "WebVideoStore\WebVideoStore.csproj", "{AF0E9CE2-B4C4-4DE1-9B4D-E9237ED2534A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebVideoStore", "WebVideoStore\WebVideoStore.csproj", "{AF0E9CE2-B4C4-4DE1-9B4D-E9237ED2534A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebVideoStore.RazorPages", "WebVideoStore.RazorPages\WebVideoStore.RazorPages.csproj", "{823E066D-5941-4024-9EFE-69AB2665D0CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{AF0E9CE2-B4C4-4DE1-9B4D-E9237ED2534A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF0E9CE2-B4C4-4DE1-9B4D-E9237ED2534A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF0E9CE2-B4C4-4DE1-9B4D-E9237ED2534A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{823E066D-5941-4024-9EFE-69AB2665D0CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{823E066D-5941-4024-9EFE-69AB2665D0CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{823E066D-5941-4024-9EFE-69AB2665D0CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{823E066D-5941-4024-9EFE-69AB2665D0CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
