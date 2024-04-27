@@ -1,11 +1,12 @@
 ﻿@page
-@model WebVideoStore.RazorPages.Pages.Categories.CreateModel
+@model WebVideoStore.RazorPages.Pages.Categories.DeleteModel
 
 <form method="post">
+    <input asp-for="Category.Id" hidden />
     <div class="border p-3 mt-4">
         <div class="row pb-2">
             <h2 class="text-primary">
-                Create Category
+                Delete Category
             </h2>
             <hr />
         </div>
@@ -22,7 +23,7 @@
         </div>
         <div class="row">
             <div class="col-6 col-md-3">
-                <button type="submit" class=" btn btn-primary form-control">Create</button>
+                <button type="submit" class=" btn btn-primary form-control">Delete</button>
             </div>
             <div class="col-6 col-md-3">
                 <a asp-page="/categories/index"  class="btn btn-secondary border form-control">
@@ -31,8 +32,8 @@
             </div>
         </div>
     </div>
- </form>
 
- @section Scripts{
+</form>
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
- }
+}
