@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebVideoStore.Data;
+using WebVideoStore.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

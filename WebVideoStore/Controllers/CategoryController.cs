@@ -1,7 +1,7 @@
 ﻿namespace WebVideoStore.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using WebVideoStore.Data;
+    using WebVideoStore.DataAccess.Data;
     using WebVideoStore.Models;
 
     public class CategoryController : Controller

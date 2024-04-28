@@ -1,4 +1,4 @@
-﻿namespace WebVideoStore.Data
+﻿namespace WebVideoStore.DataAccess.Data
 {
     using Microsoft.EntityFrameworkCore;
     using WebVideoStore.Models;
