@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace WebVideoStore.Migrations
+namespace WebVideoStore.DataAcess.Migrations
 {
     /// <inheritdoc />
     public partial class SeedDataCategory : Migration

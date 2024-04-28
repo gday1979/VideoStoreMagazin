@@ -8,7 +8,7 @@ using WebVideoStore.DataAccess.Data;
 
 #nullable disable
 
-namespace WebVideoStore.Migrations
+namespace WebVideoStore.DataAcess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20240424145344_SeedDataCategory")]

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace WebVideoStore.Migrations
+namespace WebVideoStore.DataAcess.Migrations
 {
     /// <inheritdoc />
     public partial class AddCategoryTable : Migration
