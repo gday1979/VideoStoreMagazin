@@ -1,9 +1,10 @@
-namespace WebVideoStore.Controllers
+namespace WebVideoStore.Areas.Customer.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
     using WebVideoStore.Models;
 
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

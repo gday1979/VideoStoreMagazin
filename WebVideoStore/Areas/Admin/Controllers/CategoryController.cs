@@ -5,6 +5,7 @@
     using WebVideoStore.DataAccess.Repository.IRepository;
     using WebVideoStore.Models;
 
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
