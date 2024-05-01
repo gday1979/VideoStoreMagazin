@@ -5,12 +5,10 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using WebVideoStore.Models.Models;
 
-    public interface IUnitOfWork
+    public interface IVideoTapeRepository : IRepository<VideoTape>
     {
-        ICategoryRepository Category { get; }
-
-        IVideoTapeRepository VideoTape { get; }
-        void Save();
+        void Update(VideoTape obj);
     }
 }

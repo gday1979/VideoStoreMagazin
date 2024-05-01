@@ -1,0 +1,56 @@
+﻿@using WebVideoStore.Models.Models
+@model List<VideoTape>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<partial name="_Notification" />
+<div clsas="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <h2 class="text-primary">VideoTape List</h2>
+        </div>
+        <div class="col-6 text-end pb-3">
+            <a asp-controller="VideoTape" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle-fill"></i> Create New VideoTape
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Title </th>
+                <th>Year</th>
+                <th>Director</th>
+                <th>Price Rent</th>
+                <th>Price Buy</th>
+            </tr>
+        <th>
+        </th>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model.OrderBy(u => u.Year))
+            {
+                <tr>
+                    <td>@obj.Title</td>
+                    <td>@obj.Year</td>
+                    <td>@obj.Director</td>
+                    <td>@obj.PriceRent</td>
+                    <td>@obj.PriceBuy</td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="VideoTape" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"></i>Edit
+                            </a>
+                            <a asp-controller="VideoTape" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2">
+                                <i class="bi bi-trash-fill"></i>Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>

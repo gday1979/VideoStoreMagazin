@@ -13,10 +13,12 @@
         private readonly ApplicationDbContext _db;
 
         public ICategoryRepository Category { get; private set; }
+        public IVideoTapeRepository VideoTape { get; private set; }
         public UnitOfWork(ApplicationDbContext db) 
         {
             _db = db;
             Category = new CategoryRepository(_db);
+            VideoTape = new VideoTapeRepository(_db);
         }
 
         public void Save()

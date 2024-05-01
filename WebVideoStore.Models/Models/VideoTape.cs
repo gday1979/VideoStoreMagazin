@@ -10,12 +10,12 @@
         public int Id { get; set; }
         [Required]
         [MaxLength(30)]
-        public string Title { get; set; }
+        public string? Title { get; set; }
         [Required]
         [Range(1960,2024,ErrorMessage ="Year for Production must be 1960-2024")]
         public int Year { get; set; }
         [Required]
-        public string Director { get; set; }
+        public string? Director { get; set; }
         [Required]
         [Display(Name ="Price for Rent")]
         [Range(1,10,ErrorMessage ="Price must be between 1-10")]
