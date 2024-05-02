@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class VideoTape
     {
@@ -24,5 +25,11 @@
         [Display(Name = "Price for Buy")]
         [Range(1, 100, ErrorMessage = "Price must be between 1-100")]
         public double PriceBuy { get; set; }
+
+        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public  Category Category { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

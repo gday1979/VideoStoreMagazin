@@ -7,7 +7,7 @@
 <partial name="_Notification" />
 <div clsas="container">
     <div class="row pt-4 pb-3">
-        <div class="col-6">
+        <div class="col-">
             <h2 class="text-primary">VideoTape List</h2>
         </div>
         <div class="col-6 text-end pb-3">
@@ -17,14 +17,14 @@
         </div>
     </div>
 
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped "style="width:100%">
         <thead>
             <tr>
                 <th>Title </th>
                 <th>Year</th>
                 <th>Director</th>
-                <th>Price Rent</th>
                 <th>Price Buy</th>
+                <th>Category</th>
             </tr>
         <th>
         </th>
@@ -36,7 +36,6 @@
                     <td>@obj.Title</td>
                     <td>@obj.Year</td>
                     <td>@obj.Director</td>
-                    <td>@obj.PriceRent</td>
                     <td>@obj.PriceBuy</td>
                     <td>
                         <div class="w-75 btn-group" role="group">

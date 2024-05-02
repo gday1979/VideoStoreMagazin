@@ -1,6 +1,8 @@
 ﻿namespace WebVideoStore.Areas.Admin.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using System.Collections.Generic;
     using WebVideoStore.DataAccess.Repository.IRepository;
     using WebVideoStore.Models;
     using WebVideoStore.Models.Models;
@@ -18,10 +20,21 @@
         public IActionResult Index()
         {
            List<VideoTape> objVideoTapeList = _unitOfWork.VideoTape.GetAll().ToList();
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            });
             return View(objVideoTapeList);
         }
         public IActionResult Create()
         {
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            });
+            ViewBag.CategoryList = CategoryList;
             return View();
         }
         [HttpPost]

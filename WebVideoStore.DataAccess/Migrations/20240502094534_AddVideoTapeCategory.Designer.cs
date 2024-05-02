@@ -8,11 +8,11 @@ using WebVideoStore.DataAccess.Data;
 
 #nullable disable
 
-namespace WebVideoStore.DataAcess.Migrations
+namespace WebVideoStore.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240430162336_SeedData")]
-    partial class SeedData
+    [Migration("20240502094534_AddVideoTapeCategory")]
+    partial class AddVideoTapeCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,7 +85,14 @@ namespace WebVideoStore.DataAcess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Director")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -105,13 +112,17 @@ namespace WebVideoStore.DataAcess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("VideoTapes");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            CategoryId = 5,
                             Director = "James Cameron",
+                            ImageUrl = "",
                             PriceBuy = 85.0,
                             PriceRent = 6.0,
                             Title = "The Terminator",
@@ -120,7 +131,9 @@ namespace WebVideoStore.DataAcess.Migrations
                         new
                         {
                             Id = 2,
+                            CategoryId = 5,
                             Director = "The Wachowski Brothers",
+                            ImageUrl = "",
                             PriceBuy = 74.0,
                             PriceRent = 4.0,
                             Title = "The Matrix",
@@ -129,7 +142,9 @@ namespace WebVideoStore.DataAcess.Migrations
                         new
                         {
                             Id = 3,
+                            CategoryId = 1,
                             Director = "Francis Ford Coppola",
+                            ImageUrl = "",
                             PriceBuy = 95.0,
                             PriceRent = 6.0,
                             Title = "The Godfather",
@@ -138,7 +153,9 @@ namespace WebVideoStore.DataAcess.Migrations
                         new
                         {
                             Id = 4,
+                            CategoryId = 4,
                             Director = "Christopher Nolan",
+                            ImageUrl = "",
                             PriceBuy = 75.0,
                             PriceRent = 5.0,
                             Title = "The Dark Knight",
@@ -147,7 +164,9 @@ namespace WebVideoStore.DataAcess.Migrations
                         new
                         {
                             Id = 5,
+                            CategoryId = 2,
                             Director = "Frank Darabont",
+                            ImageUrl = "",
                             PriceBuy = 80.0,
                             PriceRent = 5.0,
                             Title = "The Shawshank Redemption",
@@ -156,7 +175,9 @@ namespace WebVideoStore.DataAcess.Migrations
                         new
                         {
                             Id = 6,
+                            CategoryId = 3,
                             Director = "Quentin Tarantino",
+                            ImageUrl = "",
                             PriceBuy = 70.0,
                             PriceRent = 4.0,
                             Title = "Pulp Fiction",
@@ -165,7 +186,9 @@ namespace WebVideoStore.DataAcess.Migrations
                         new
                         {
                             Id = 7,
+                            CategoryId = 3,
                             Director = "Jonathan Demme",
+                            ImageUrl = "",
                             PriceBuy = 70.0,
                             PriceRent = 4.0,
                             Title = "The Silence of the Lambs",
@@ -174,7 +197,9 @@ namespace WebVideoStore.DataAcess.Migrations
                         new
                         {
                             Id = 8,
+                            CategoryId = 4,
                             Director = "Stanley Kubrick",
+                            ImageUrl = "",
                             PriceBuy = 70.0,
                             PriceRent = 4.0,
                             Title = "The Shining",
@@ -183,7 +208,9 @@ namespace WebVideoStore.DataAcess.Migrations
                         new
                         {
                             Id = 9,
+                            CategoryId = 4,
                             Director = "William Friedkin",
+                            ImageUrl = "",
                             PriceBuy = 70.0,
                             PriceRent = 4.0,
                             Title = "The Exorcist",
@@ -192,12 +219,25 @@ namespace WebVideoStore.DataAcess.Migrations
                         new
                         {
                             Id = 10,
+                            CategoryId = 4,
                             Director = "M. Night Shyamalan",
+                            ImageUrl = "",
                             PriceBuy = 70.0,
                             PriceRent = 4.0,
                             Title = "The Sixth Sense",
                             Year = 1999
                         });
+                });
+
+            modelBuilder.Entity("WebVideoStore.Models.Models.VideoTape", b =>
+                {
+                    b.HasOne("WebVideoStore.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }
