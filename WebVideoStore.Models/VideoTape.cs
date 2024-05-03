@@ -1,5 +1,6 @@
-﻿namespace WebVideoStore.Models.Models
+﻿namespace WebVideoStore.Models
 {
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -13,13 +14,13 @@
         [MaxLength(30)]
         public string? Title { get; set; }
         [Required]
-        [Range(1960,2024,ErrorMessage ="Year for Production must be 1960-2024")]
+        [Range(1960, 2024, ErrorMessage = "Year for Production must be 1960-2024")]
         public int Year { get; set; }
         [Required]
         public string? Director { get; set; }
         [Required]
-        [Display(Name ="Price for Rent")]
-        [Range(1,10,ErrorMessage ="Price must be between 1-10")]
+        [Display(Name = "Price for Rent")]
+        [Range(1, 10, ErrorMessage = "Price must be between 1-10")]
         public double PriceRent { get; set; }
         [Required]
         [Display(Name = "Price for Buy")]
@@ -28,8 +29,9 @@
 
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
-        public  Category Category { get; set; }
-
+        [ValidateNever]
+        public Category Category { get; set; }
+        [ValidateNever]
         public string ImageUrl { get; set; }
     }
 }

@@ -2,7 +2,6 @@
 {
     using Microsoft.EntityFrameworkCore;
     using WebVideoStore.Models;
-    using WebVideoStore.Models.Models;
 
     public class ApplicationDbContext : DbContext
     {

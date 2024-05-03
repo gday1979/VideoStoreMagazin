@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using WebVideoStore.DataAccess.Repository.IRepository;
     using WebVideoStore.Models;
-    using WebVideoStore.Models.Models;
+    using WebVideoStore.Models.ViewModels;
 
     [Area("Admin")]
     public class VideoTapeController : Controller
@@ -29,25 +29,38 @@
         }
         public IActionResult Create()
         {
-            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
+            VideoTapeViewModels videoTapeViewModels = new()
             {
-                Text = i.Name,
-                Value = i.Id.ToString()
-            });
-            ViewBag.CategoryList = CategoryList;
-            return View();
+                CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }),
+                VideoTape = new VideoTape()
+            };
+            return View(videoTapeViewModels);
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(VideoTape obj)
+        public IActionResult Create(VideoTapeViewModels videoTapeViewModels)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.VideoTape.Add(obj);
+                _unitOfWork.VideoTape.Add(videoTapeViewModels.VideoTape);
                 _unitOfWork.Save();
                 TempData["success"] = "VideoTape created successfully";
-            }
             return RedirectToAction("Index");
+            }
+            else
+            {
+
+                videoTapeViewModels.CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                });
+                
+            return View(videoTapeViewModels);
+            }
         }
         public IActionResult Edit(int? id)
         {

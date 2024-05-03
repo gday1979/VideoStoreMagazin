@@ -1,5 +1,4 @@
-﻿@using WebVideoStore.Models.Models
-@model VideoTape
+﻿@model VideoTapeViewModels
 
 @{
     ViewData["Title"] = "Create";
@@ -8,38 +7,46 @@
 
 
 <form method="post">
-    <div class="border p-3 mt-4">
-        <div class="row pb-2">
-            <h2 class="text-primary">
+    <div class="border p-1 mt-4" >
+        <div class="row mb-2 pb-2">
+            <h2 class="text-center">
                 Create VideoTape
             </h2>
             <hr />
         </div>
         <div asp-validation-summary="All"></div>
-        <div class="mb-3 row p-1">
-            <label asp-for="Title" class="p-0"></label>
-            <input asp-for="Title" class="form-control" />
-            <span asp-validation-for="Title" class="text-danger"></span>
+        <div class="mb-3 row p-3">
+            <label asp-for="VideoTape.Title" class="p-1"></label>
+            <input asp-for="VideoTape.Title" class="form-control" />
+            <span asp-validation-for="VideoTape.Title" class="text-danger"></span>
         </div>
-        <div class="mb-3 row p-1">
-            <label asp-for="Year" class="p-0"></label>
-            <input asp-for="Year" class="form-control" />
-            <span asp-validation-for="Year" class="text-danger"></span>
+        <div class="mb-3 row p-3">
+            <label asp-for="VideoTape.Year" class="p-1"></label>
+            <input asp-for="VideoTape.Year" class="form-control" />
+            <span asp-validation-for="VideoTape.Year" class="text-danger"></span>
         </div>
-        <div class="mb-3 row p-1">
-            <label asp-for="Director" class="p-0"></label>
-            <input asp-for="Director" class="form-control" />
-            <span asp-validation-for="Director" class="text-danger"></span>
+        <div class="mb-3 row p-3">
+            <label asp-for="VideoTape.Director" class="p-1"></label>
+            <input asp-for="VideoTape.Director" class="form-control" />
+            <span asp-validation-for="VideoTape.Director" class="text-danger"></span>
         </div>
-        <div class="mb-3 row p-1">
-            <label asp-for="PriceBuy" class="p-0"></label>
-            <input asp-for="PriceBuy" class="form-control" />
-            <span asp-validation-for="PriceBuy" class="text-danger"></span>
+        <div class="mb-3 row p-3">
+            <label asp-for="VideoTape.PriceBuy" class="p-1"></label>
+            <input asp-for="VideoTape.PriceBuy" class="form-control" />
+            <span asp-validation-for="VideoTape.PriceBuy" class="text-danger"></span>
         </div>
-        <div class="mb-3 row p-1">
-            <label asp-for="CategoryId" class="p-0"></label>
-            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        <div class="mb-3 row p-3">
+            <select asp-for="@Model.VideoTape.CategoryId"  asp-items="@Model.CategoryList" class="from-select border-0 shadow" >
+            <option disabled selected>--Select Category--</option>
+            </select>
+            <label asp-for="VideoTape.CategoryId" class="p-0"></label>
+            <span asp-validation-for="VideoTape.CategoryId" class="text-danger"></span>
+         </div>
+        <div class="mb-3 row p-3">
+            <label asp-for="VideoTape.ImageUrl" class="p-1"></label>
+            <input asp-for="VideoTape.ImageUrl" class="form-control" />
+            <span asp-validation-for="VideoTape.ImageUrl" class="text-danger"></span>
+        </div
         <div class="row">
             <div class="col-6 col-md-3">
                 <button type="submit" class=" btn btn-primary form-control">Create</button>

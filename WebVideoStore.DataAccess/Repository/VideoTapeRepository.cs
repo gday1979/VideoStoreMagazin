@@ -8,7 +8,7 @@
     using System.Threading.Tasks;
     using WebVideoStore.DataAccess.Data;
     using WebVideoStore.DataAccess.Repository.IRepository;
-    using WebVideoStore.Models.Models;
+    using WebVideoStore.Models;
 
     public class VideoTapeRepository : Repository<VideoTape>, IVideoTapeRepository
     {

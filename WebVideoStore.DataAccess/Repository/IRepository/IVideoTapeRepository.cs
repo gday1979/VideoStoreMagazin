@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using WebVideoStore.Models.Models;
+    using WebVideoStore.Models;
 
     public interface IVideoTapeRepository : IRepository<VideoTape>
     {
