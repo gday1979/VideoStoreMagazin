@@ -11,10 +11,12 @@
     public class VideoTapeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public VideoTapeController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public VideoTapeController(IUnitOfWork unitOfWork,IWebHostEnvironment webHostEnvironment  )
         {
 
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
 
         }
         public IActionResult Index()
@@ -27,7 +29,7 @@
             });
             return View(objVideoTapeList);
         }
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
             VideoTapeViewModels videoTapeViewModels = new()
             {
@@ -38,13 +40,35 @@
                 }),
                 VideoTape = new VideoTape()
             };
-            return View(videoTapeViewModels);
+            if (id == null || id == 0)
+            {
+                //create
+                return View(videoTapeViewModels);
+            }
+            else
+            {
+                //update
+                videoTapeViewModels.VideoTape = _unitOfWork.VideoTape.Get(u => u.Id == id);
+                return View(videoTapeViewModels);
+            }
         }
+            
         [HttpPost]
-        public IActionResult Create(VideoTapeViewModels videoTapeViewModels)
+        public IActionResult Upsert(VideoTapeViewModels videoTapeViewModels,IFormFile? file)
         {
             if (ModelState.IsValid)
             {
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                if(file !=null)
+                {
+                    string fileName = Guid.NewGuid().ToString()+Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(webRootPath, @"images\videotape");
+                    using(var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    videoTapeViewModels.VideoTape.ImageUrl = @"\images\videotape\" + fileName;
+                }
                 _unitOfWork.VideoTape.Add(videoTapeViewModels.VideoTape);
                 _unitOfWork.Save();
                 TempData["success"] = "VideoTape created successfully";
@@ -62,31 +86,7 @@
             return View(videoTapeViewModels);
             }
         }
-        public IActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            VideoTape videoTapeFromDb = _unitOfWork.VideoTape.Get(u => u.Id == id);
-            if (videoTapeFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(videoTapeFromDb);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(VideoTape obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.VideoTape.Update(obj);
-                _unitOfWork.Save();
-                TempData["success"] = "VideoTape updated successfully";
-            }
-            return RedirectToAction("Index");
-        }
+        
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
