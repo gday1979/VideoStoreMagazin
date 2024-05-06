@@ -19,7 +19,8 @@ namespace WebVideoStore.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<VideoTape> videoTapeList = _unitOfWork.VideoTape.GetAll(includeProperties: "Category");
+            return View(videoTapeList);
         }
 
         public IActionResult Privacy()
