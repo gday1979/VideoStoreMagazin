@@ -20,7 +20,21 @@
 
         public void Update(VideoTape obj)
         {
-            _db.VideoTapes.Update(obj);
+           var objFromDb = _db.VideoTapes.FirstOrDefault(s => s.Id == obj.Id);
+            if(objFromDb !=null)
+            {
+                objFromDb.Title = obj.Title;
+                objFromDb.Director = obj.Director;
+                objFromDb.Year = obj.Year;
+                objFromDb.PriceRent = obj.PriceRent;
+                objFromDb.PriceBuy = obj.PriceBuy;
+                objFromDb.CategoryId = obj.CategoryId;
+                if(obj.ImageUrl != null)
+                {
+                    objFromDb.ImageUrl = obj.ImageUrl;
+                }
+
+            }
         }
     }
 }

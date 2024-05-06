@@ -21,12 +21,8 @@
         }
         public IActionResult Index()
         {
-           List<VideoTape> objVideoTapeList = _unitOfWork.VideoTape.GetAll().ToList();
-            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(i => new SelectListItem
-            {
-                Text = i.Name,
-                Value = i.Id.ToString()
-            });
+           List<VideoTape> objVideoTapeList = _unitOfWork.VideoTape.GetAll(includeProperties:"Category").ToList();
+           
             return View(objVideoTapeList);
         }
         public IActionResult Upsert(int? id)
@@ -63,13 +59,31 @@
                 {
                     string fileName = Guid.NewGuid().ToString()+Path.GetExtension(file.FileName);
                     string productPath = Path.Combine(webRootPath, @"images\videotape");
+                    if (!string.IsNullOrEmpty(videoTapeViewModels.VideoTape.ImageUrl))
+                    {
+                        //delete the old image
+                        var oldImagePath = Path.Combine(webRootPath, videoTapeViewModels.VideoTape.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+
+                    }
                     using(var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
                     videoTapeViewModels.VideoTape.ImageUrl = @"\images\videotape\" + fileName;
                 }
-                _unitOfWork.VideoTape.Add(videoTapeViewModels.VideoTape);
+                if (videoTapeViewModels.VideoTape.Id == 0)
+                {
+                    _unitOfWork.VideoTape.Add(videoTapeViewModels.VideoTape);
+
+                }
+                else
+                {
+                    _unitOfWork.VideoTape.Update(videoTapeViewModels.VideoTape);
+                }
                 _unitOfWork.Save();
                 TempData["success"] = "VideoTape created successfully";
             return RedirectToAction("Index");
@@ -87,22 +101,7 @@
             }
         }
         
-        public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            VideoTape videoTapeFromDb = _unitOfWork.VideoTape.Get(u => u.Id == id);
-            if (videoTapeFromDb == null)
-            {
-                return NotFound();
-            }
-            _unitOfWork.VideoTape.Remove(videoTapeFromDb);
-            _unitOfWork.Save();
-            TempData["success"] = "VideoTape deleted successfully";
-            return RedirectToAction("Index");
-        }
+       
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
@@ -118,5 +117,37 @@
             return RedirectToAction("Index");
 
         }
+
+
+        #region API CALLS
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<VideoTape> objVideoTapeList = _unitOfWork.VideoTape.GetAll(includeProperties: "Category").ToList();
+            return Json(new { data = objVideoTapeList });
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int? id)
+        {
+            var videotapeToBeDeleted = _unitOfWork.VideoTape.Get(u => u.Id == id);
+            if(videotapeToBeDeleted == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+            var oldImagePath =
+                Path.Combine(_webHostEnvironment.WebRootPath,
+                videotapeToBeDeleted.ImageUrl .TrimStart('\\'));
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+            _unitOfWork.VideoTape.Remove(videotapeToBeDeleted);
+            _unitOfWork.Save();
+            List<VideoTape> objVideoTapeList = _unitOfWork.VideoTape.GetAll(includeProperties: "Category").ToList();
+            return Json(new { data = objVideoTapeList });
+        }
+        #endregion
     }
 }

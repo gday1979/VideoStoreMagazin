@@ -1,11 +1,6 @@
-﻿@using WebVideoStore.Models.ViewModels
-@model List<VideoTape>
+﻿@model List<VideoTape>
 
-@{
-    ViewData["Title"] = "Index";
-}
-<partial name="_Notification" />
-<div clsas="card shadow border-0 my-4">
+<div class="card shadow border-0 my-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
@@ -23,42 +18,24 @@
                 </a>
             </div>
         </div>
-     </div>
 
-
-    <table class="table table-bordered table-striped "style="width:100%">
-        <thead>
-            <tr>
-                <th>Title </th>
-                <th>Year</th>
-                <th>Director</th>
-                <th>Price Buy</th>
-                <th>Category</th>
-            </tr>
-        <th>
-        </th>
-        </thead>
-        <tbody>
-            @foreach (var obj in Model.OrderBy(u => u.Year))
-            {
+        <table id="tblData" class="table table-bordered table-striped" style="width:100%">
+            <thead>
                 <tr>
-                    <td>@obj.Title</td>
-                    <td>@obj.Year</td>
-                    <td>@obj.Director</td>
-                    <td>@obj.PriceBuy</td>
-                    <td>
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="VideoTape" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
-                                <i class="bi bi-pencil-square"></i>Edit
-                            </a>
-                            <a asp-controller="VideoTape" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2">
-                                <i class="bi bi-trash-fill"></i>Delete
-                            </a>
-                        </div>
-                    </td>
+                    <th>Title</th>
+                    <th>Year</th>
+                    <th>Director</th>
+                    <th>PriceBuy</th>
+                    <th>Category</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
+            </thead>
+        </table>
 
-    </table>
+    </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/videotape.js"></script>
+    
+}
