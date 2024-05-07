@@ -23,6 +23,12 @@ namespace WebVideoStore.Areas.Customer.Controllers
             return View(videoTapeList);
         }
 
+        public IActionResult Details(int videotapeId)
+        {
+            VideoTape videoTape = _unitOfWork.VideoTape.Get(u=>u.Id==videotapeId,includeProperties: "Category");
+            return View(videoTape);
+        }
+
         public IActionResult Privacy()
         {
             return View();

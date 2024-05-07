@@ -1,9 +1,11 @@
 ﻿namespace WebVideoStore.DataAccess.Data
 {
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using WebVideoStore.Models;
+    using WebVideoStore.Models.ViewModels;
 
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -12,8 +14,11 @@
             public DbSet<Category> Categories { get; set; }
             public DbSet<VideoTape>VideoTapes { get; set; }
 
+            public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Category>()
                 .HasData(
                 new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
