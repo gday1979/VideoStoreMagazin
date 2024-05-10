@@ -33,6 +33,6 @@
         public Category Category { get; set; }
         [Required]
         [ValidateNever]
-        public string? ImageUrl { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

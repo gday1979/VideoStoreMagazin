@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WebVideoStore.DataAccess\WebVideoStore.DataAccess.csproj" />
     <ProjectReference Include="..\WebVideoStore.Models\WebVideoStore.Models.csproj" />
+    <ProjectReference Include="..\WebVideoStoreUtility\WebVideoStoreUtility.csproj" />
   </ItemGroup>
 
   <ItemGroup>

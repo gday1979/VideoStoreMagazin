@@ -1,11 +1,14 @@
 ﻿namespace WebVideoStore.Areas.Admin.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using WebVideoStore.DataAccess.Data;
     using WebVideoStore.DataAccess.Repository.IRepository;
     using WebVideoStore.Models;
+    using WebVideoStoreUtility;
 
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

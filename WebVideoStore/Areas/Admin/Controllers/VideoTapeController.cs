@@ -1,13 +1,16 @@
 ﻿namespace WebVideoStore.Areas.Admin.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using System.Collections.Generic;
     using WebVideoStore.DataAccess.Repository.IRepository;
     using WebVideoStore.Models;
     using WebVideoStore.Models.ViewModels;
+    using WebVideoStoreUtility;
 
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class VideoTapeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
