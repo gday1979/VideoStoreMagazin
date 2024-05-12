@@ -5,11 +5,11 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebVideoStore", "WebVideoStore\WebVideoStore.csproj", "{AF0E9CE2-B4C4-4DE1-9B4D-E9237ED2534A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebVideoStore.DataAccess", "WebVideoStore.DataAccess\WebVideoStore.DataAccess.csproj", "{3D5E2531-D711-4409-948F-34EF6479E436}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebVideoStore.DataAccess", "WebVideoStore.DataAccess\WebVideoStore.DataAccess.csproj", "{3D5E2531-D711-4409-948F-34EF6479E436}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebVideoStore.Models", "WebVideoStore.Models\WebVideoStore.Models.csproj", "{96863556-98A3-4F1D-A8FC-332868F5D1E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebVideoStore.Models", "WebVideoStore.Models\WebVideoStore.Models.csproj", "{96863556-98A3-4F1D-A8FC-332868F5D1E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebVideoStoreUtility", "WebVideoStoreUtility\WebVideoStoreUtility.csproj", "{5E566BF8-961F-4017-A55E-1EC5B709EFFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebVideoStoreUtility", "WebVideoStoreUtility\WebVideoStoreUtility.csproj", "{5E566BF8-961F-4017-A55E-1EC5B709EFFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
