@@ -29,6 +29,14 @@
                     new Category { Id = 4, Name = "Horror", DisplayOrder = 4 },
                     new Category { Id = 5, Name = "Sci-Fi", DisplayOrder = 5 }
                 );
+            modelBuilder.Entity<Company>()
+                           .HasData(
+                           new Company { Id = 1, Name = "20 Century Pictures", StreetAddress="Park Avenue",City="Los Angeles",State="California",PostalCode="90210",PhoneNumber="001245858963" },
+                           new Company { Id = 2, Name = "Warner Bros", StreetAddress = "Warner Blvd", City = "Los Angeles", State = "California", PostalCode = "90210",PhoneNumber="001359326589" },
+                           new Company { Id = 3, Name = "Universal Pictures", StreetAddress = "Universal City Plaza", City = "Universal City", State = "California", PostalCode = "91608",PhoneNumber="001895689958" },
+                           new Company { Id = 4, Name = "Paramount Pictures", StreetAddress = "Melrose Ave", City = "Los Angeles", State = "California", PostalCode = "90038",PhoneNumber = "001359326589" },
+                           new Company { Id = 5, Name = "New Line Cinema", StreetAddress = "New Line Cinema", City = "Los Angeles", State = "California", PostalCode = "90038",PhoneNumber="0012582589659" }                          
+                           );
             modelBuilder.Entity<VideoTape>()
                 .HasData(
                    new VideoTape { Id = 1,
