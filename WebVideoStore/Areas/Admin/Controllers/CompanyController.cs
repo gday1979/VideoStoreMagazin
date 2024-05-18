@@ -73,7 +73,7 @@
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<VideoTape> objCompanyList = _unitOfWork.VideoTape.GetAll().ToList();
+            List<Company> objCompanyList = _unitOfWork.Company.GetAll().ToList();
             return Json(new { data = objCompanyList });
         }
 
