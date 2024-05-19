@@ -10,12 +10,12 @@
     using WebVideoStore.DataAccess.Repository.IRepository;
     using System.Linq.Expressions;
 
-    public class Repository<T> : IRepository<T> where T : class
+    public class IRepository<T> : IRepository.IRepository<T> where T : class
     {
         private readonly ApplicationDbContext _db;
         internal DbSet<T> dbSet;
 
-        public Repository(ApplicationDbContext db)
+        public IRepository(ApplicationDbContext db)
         {
             _db = db;
             this.dbSet = _db.Set<T>();

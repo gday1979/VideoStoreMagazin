@@ -16,12 +16,18 @@
         public IVideoTapeRepository VideoTape { get; private set; }
 
         public ICompanyRepository Company { get; private set; }
+
+        public IShoppingCardRepository ShoppingCart { get; private set; }
+
+        public IApplicationUserRepository ApplicationUser { get; private set; }
         public UnitOfWork(ApplicationDbContext db) 
         {
             _db = db;
             Company = new CompanyRepository(_db);
             Category = new CategoryRepository(_db);
             VideoTape = new VideoTapeRepository(_db);
+            ShoppingCart = new ShoppingCardRepository(_db);
+           ApplicationUser = new ApplicationUserRepository(_db);
         }
 
         public void Save()

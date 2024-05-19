@@ -13,6 +13,10 @@
         IVideoTapeRepository VideoTape { get; }
 
         ICompanyRepository Company { get; }
+
+        IShoppingCardRepository ShoppingCart { get; }
+
+        IApplicationUserRepository ApplicationUser { get; }
         void Save();
     }
 }

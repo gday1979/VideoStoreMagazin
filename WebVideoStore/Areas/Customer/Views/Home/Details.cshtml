@@ -1,12 +1,13 @@
-﻿@model VideoTape
+﻿@model ShoppingCart
 
 <form method="post">
+    <input hidden asp-for="VideoTapeId" />
     <div class="card shadow border-0 mt-4 mb-4">
-        <div class="card-header bg-secondary bg-gradient text-light py-4">
+        <div class=" card-header bg-secondary bg-gradient text-light py-4">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h3 class="text-white text-uppercase">@Model.Title</h3>
-                    <p class="text-white-50 fw-semibold mb-0">by Director @Model.Director</p>
+                    <h3 class="text-white text-uppercase">@Model.VideoTape.Title</h3>
+                    <p class="text-white-50 fw-semibold mb-0">by Director @Model.VideoTape.Director</p>
                 </div>
             </div>
         </div>
@@ -22,24 +23,60 @@
                 </div>
                 <div class="row">
                     <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                        <img src="@Model.ImageUrl" width="100%" class="rounded" />
+                        <img src="@Model.VideoTape.ImageUrl" width="100%" class="rounded" />
                     </div>
                     <div class="col-12 col-lg-6 offset-lg-1">
                           <div class="col-12 col-md-6 pb-4">
-                              <span class="badge">@Model.Category.Name</span>
+                              <span class="badge">@Model.VideoTape.Category.Name</span>
                           </div>
                           <div class="row ps-2">
-                              <h6 class="text-dark text-opacity-50">Year: @Model.Year</h6>
+                              <h6 class="text-dark text-opacity-50">Year: @Model.VideoTape.Year</h6>
                           </div>
                         <div class="row ps-2">
-                            <h6 class="text-dark text-opacity-75">PriceRent: @Model.PriceRent.ToString("c")</h6>
+                            <h6 class="text-dark text-opacity-75">PriceRent: @Model.VideoTape.PriceRent.ToString("c")</h6>
                         </div>
                         <div class="row ps-2">
-                            <h6 class="text-dark text-opacity-75">PriceBuy: @Model.PriceBuy.ToString("c")</h6>
+                            <h6 class="text-dark text-opacity-75">PriceBuy: @Model.VideoTape.PriceBuy.ToString("c")</h6>
                         </div>
                     </div>
 
                 </div>
+                <div class="row text-center ps-2">
+                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                        <div class="text-dark text-opacity-50 fw-semibold">Quantity</div>
+                    </div>
+                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                        <div class="text-dark text-opacity-50 fw-semibold">Price Buy</div>
+                    </div>
+                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                        <div class="text-dark text-opacity-50 fw-semibold">Price Rent</div>
+                    </div>
+                 </div>
+                <div class="row pl-2 my-3">
+                    <p class="text-secondary lh-sm">@Html.Raw(Model.VideoTape.Title)</p>
+                </div>
+                <div class="row pl-2 mb-3">
+                    <div class="col-md-4">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary text-white border-0 fw-semibold"
+                                  id="inputGroup-sizing-default">
+                                Count
+                            </span>
+                            <input asp-for="Count" type="number" value="1" class="form-control text-end"
+                                   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="row">
+                    <div class="col-12 clo-md-6 pb-1">
+                        <button type="submit" disabled class="btn btn-primary bg-gradient fw-semibold btn-sm text-uppercase">
+                            <small>Add to Cart</small>
+                        </button>
+                    </div>
+                </div>    
 
             </div>
 

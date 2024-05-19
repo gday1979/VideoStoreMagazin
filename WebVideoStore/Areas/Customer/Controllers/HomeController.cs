@@ -1,6 +1,7 @@
 namespace WebVideoStore.Areas.Customer.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.CodeAnalysis;
     using System.Diagnostics;
     using WebVideoStore.DataAccess.Repository.IRepository;
     using WebVideoStore.Models;
@@ -25,8 +26,13 @@ namespace WebVideoStore.Areas.Customer.Controllers
 
         public IActionResult Details(int videotapeId)
         {
-            VideoTape videoTape = _unitOfWork.VideoTape.Get(u=>u.Id==videotapeId,includeProperties: "Category");
-            return View(videoTape);
+            ShoppingCart cart = new()
+            {
+                VideoTape = _unitOfWork.VideoTape.Get(u => u.Id == videotapeId, includeProperties: "Category"),
+                Count = 1,
+                VideoTapeId = videotapeId
+            };
+            return View(cart);
         }
 
         public IActionResult Privacy()
