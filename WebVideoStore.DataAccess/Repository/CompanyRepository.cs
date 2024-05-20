@@ -9,7 +9,7 @@
     using WebVideoStore.DataAccess.Repository.IRepository;
     using WebVideoStore.Models;
 
-    public class CompanyRepository : IRepository<Company>, ICompanyRepository
+    public class CompanyRepository : Repository<Company>, ICompanyRepository
     {
         private readonly ApplicationDbContext _db;
 

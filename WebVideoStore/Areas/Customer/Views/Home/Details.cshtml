@@ -32,12 +32,6 @@
                           <div class="row ps-2">
                               <h6 class="text-dark text-opacity-50">Year: @Model.VideoTape.Year</h6>
                           </div>
-                        <div class="row ps-2">
-                            <h6 class="text-dark text-opacity-75">PriceRent: @Model.VideoTape.PriceRent.ToString("c")</h6>
-                        </div>
-                        <div class="row ps-2">
-                            <h6 class="text-dark text-opacity-75">PriceBuy: @Model.VideoTape.PriceBuy.ToString("c")</h6>
-                        </div>
                     </div>
 
                 </div>
@@ -52,6 +46,16 @@
                         <div class="text-dark text-opacity-50 fw-semibold">Price Rent</div>
                     </div>
                  </div>
+                 <div class="row text-center ps-2">
+                    <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
+                        <div>Price</div>
+                    </div>
+                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                        <div class="text-dark fw-semibold">@Model.VideoTape.PriceBuy.ToString("c")</div>
+                    </div>
+                    <div class="p-1 col-3 col-lg-2 bg-white border-bottom">
+                        <div class="text-dark fw-semibold">@Model.VideoTape.PriceRent.ToString("c")</div>
+                    </div>
                 <div class="row pl-2 my-3">
                     <p class="text-secondary lh-sm">@Html.Raw(Model.VideoTape.Title)</p>
                 </div>
@@ -72,7 +76,7 @@
                 
                 <div class="row">
                     <div class="col-12 clo-md-6 pb-1">
-                        <button type="submit" disabled class="btn btn-primary bg-gradient fw-semibold btn-sm text-uppercase">
+                        <button type="submit"  class="btn btn-primary bg-gradient fw-semibold btn-sm text-uppercase">
                             <small>Add to Cart</small>
                         </button>
                     </div>

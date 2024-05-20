@@ -10,12 +10,12 @@
     using WebVideoStore.DataAccess.Repository.IRepository;
     using System.Linq.Expressions;
 
-    public class IRepository<T> : IRepository.IRepository<T> where T : class
+    public class Repository<T> :IRepository<T> where T : class
     {
         private readonly ApplicationDbContext _db;
         internal DbSet<T> dbSet;
 
-        public IRepository(ApplicationDbContext db)
+        public Repository(ApplicationDbContext db)
         {
             _db = db;
             this.dbSet = _db.Set<T>();
@@ -40,9 +40,13 @@
             return query.FirstOrDefault();
         }
         //Category,CategoryId
-        public IEnumerable<T> GetAll(string? includeProperties=null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties=null)
         {
             IQueryable<T> query = dbSet;
+            if(filter != null)
+            {
+                query=query.Where(filter);
+            }
            if(!string.IsNullOrEmpty(includeProperties))
             {
                 foreach(var includeProperty in includeProperties.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries))

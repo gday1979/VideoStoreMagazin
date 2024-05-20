@@ -9,7 +9,7 @@
     using WebVideoStore.DataAccess.Repository.IRepository;
     using WebVideoStore.Models;
 
-    public class ShoppingCardRepository : IRepository<ShoppingCart>, IShoppingCardRepository
+    public class ShoppingCardRepository : Repository<ShoppingCart>, IShoppingCardRepository
     {
         private readonly ApplicationDbContext _db;
         public ShoppingCardRepository(ApplicationDbContext db) : base(db)

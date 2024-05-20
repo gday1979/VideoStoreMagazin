@@ -10,7 +10,7 @@
     using WebVideoStore.DataAccess.Repository.IRepository;
     using WebVideoStore.Models;
 
-    public class VideoTapeRepository : IRepository<VideoTape>, IVideoTapeRepository
+    public class VideoTapeRepository : Repository<VideoTape>, IVideoTapeRepository
     {
         private ApplicationDbContext _db;
         public VideoTapeRepository(ApplicationDbContext db) : base(db)

@@ -10,7 +10,7 @@
     using WebVideoStore.DataAccess.Repository.IRepository;
     using WebVideoStore.Models;
 
-    public class CategoryRepository : IRepository<Category>, ICategoryRepository
+    public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
         
         private readonly ApplicationDbContext _db;
