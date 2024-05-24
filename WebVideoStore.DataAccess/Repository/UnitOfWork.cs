@@ -20,6 +20,10 @@
         public IShoppingCardRepository ShoppingCart { get; private set; }
 
         public IApplicationUserRepository ApplicationUser { get; private set; }
+
+        public IOrderHeaderRepository OrderHeader { get; private set; }
+
+        public IOrderDetailRepository OrderDetail { get; private set; }
         public UnitOfWork(ApplicationDbContext db) 
         {
             _db = db;
@@ -27,6 +31,8 @@
             Category = new CategoryRepository(_db);
             VideoTape = new VideoTapeRepository(_db);
             ShoppingCart = new ShoppingCardRepository(_db);
+            OrderHeader = new OrderHeaderRepository(_db);
+            OrderDetail = new OrderDetailRepository(_db);
            ApplicationUser = new ApplicationUserRepository(_db);
         }
 
