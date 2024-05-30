@@ -13,6 +13,7 @@
     public class CardController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+		[BindProperty]
         public ShoppingCardViewModels ShoppingCardViewModels{ get; set; }
         public CardController(IUnitOfWork unitOfWork)
         {
@@ -20,24 +21,26 @@
         }
 
 		public IActionResult Index()
-		{
-			var claimsIdentity = (ClaimsIdentity)User.Identity;
-			var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+{
+    var claimsIdentity = (ClaimsIdentity)User.Identity;
+    var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-			ShoppingCardViewModels = new()
-			{
-				ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "VideoTape"),
-				OrderHeader = new ()
-			};
-			foreach (var cart in ShoppingCardViewModels.ShoppingCartList)
-			{
-				cart.PriceBuy = GetPriceBasedOnQuantity(cart);
-				
-				ShoppingCardViewModels.OrderHeader.OrderTotal += (cart.PriceBuy * cart.Count);
-			}
+    ShoppingCardViewModels = new()
+    {
+        ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "VideoTape"),
+        OrderHeader = new ()
+    };
 
-			return View(ShoppingCardViewModels);
-		}
+    ShoppingCardViewModels.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+    ShoppingCardViewModels.OrderHeader.Name = ShoppingCardViewModels.OrderHeader.ApplicationUser.PhoneNumber;
+    foreach (var cart in ShoppingCardViewModels.ShoppingCartList)
+    {
+        cart.Price = GetPriceBasedOnQuantity(cart);
+        ShoppingCardViewModels.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+    }
+
+    return View(ShoppingCardViewModels); // Corrected here
+}
         public IActionResult Plus(int cartId)
         {
 			var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, includeProperties: "VideoTape");
@@ -69,10 +72,85 @@
 		}
         public IActionResult Summary()
         {
-			
-			return View();
+
+			var claimsIdentity = (ClaimsIdentity)User.Identity;
+			var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+			ShoppingCardViewModels = new()
+			{
+				ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "VideoTape"),
+				OrderHeader = new()
+			};
+			ShoppingCardViewModels.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+            ShoppingCardViewModels.OrderHeader.PhoneNumber = ShoppingCardViewModels.
+                OrderHeader.ApplicationUser.PhoneNumber;
+            ShoppingCardViewModels.OrderHeader.StreetAddress = ShoppingCardViewModels.OrderHeader.ApplicationUser.StreetAddress;
+            ShoppingCardViewModels.OrderHeader.City = ShoppingCardViewModels.OrderHeader.ApplicationUser.StreetAddress;
+            ShoppingCardViewModels.OrderHeader.State = ShoppingCardViewModels.OrderHeader.ApplicationUser.State;
+            ShoppingCardViewModels.OrderHeader.PostalCode = ShoppingCardViewModels.OrderHeader.ApplicationUser.PostalCode;
+			foreach(var cart in ShoppingCardViewModels.ShoppingCartList)
+			{
+				cart.Price = GetPriceBasedOnQuantity(cart);
+				ShoppingCardViewModels.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+			}
+			return View(ShoppingCardViewModels);
 		}
-        private double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
+        [HttpPost]
+        [ActionName("Summary")]
+        public IActionResult SummaryPOST()
+        {
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+
+            ShoppingCardViewModels.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "VideoTape");
+
+            ShoppingCardViewModels.OrderHeader.OrderDate = DateTime.Now;
+
+            ShoppingCardViewModels.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+
+            foreach (var cart in ShoppingCardViewModels.ShoppingCartList)
+            {
+                cart.Price = GetPriceBasedOnQuantity(cart);
+                ShoppingCardViewModels.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+            }
+            if (ShoppingCardViewModels.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
+            {
+                ShoppingCardViewModels.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+                ShoppingCardViewModels.OrderHeader.OrderStatus = SD.StatusPending;
+            }
+            else
+            {
+                ShoppingCardViewModels.OrderHeader.PaymentStatus = SD.PaymentSattusDelayedPayment;
+                ShoppingCardViewModels.OrderHeader.OrderStatus = SD.StatusApproved;
+            }
+            _unitOfWork.OrderHeader.Add(ShoppingCardViewModels.OrderHeader);
+            _unitOfWork.Save();
+            foreach (var cart in ShoppingCardViewModels.ShoppingCartList)
+            {
+                OrderDetail orderDetail = new()
+                {
+                    VideoTapeId = cart.VideoTapeId,
+                    OrderHeaderId = ShoppingCardViewModels.OrderHeader.Id,
+                    Price = cart.Price,
+                    Count = cart.Count,
+
+                };
+                _unitOfWork.OrderDetail.Add(orderDetail);
+                _unitOfWork.Save();
+            }
+            if (ShoppingCardViewModels.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
+            {
+            }
+            return RedirectToAction(nameof(OrderConfirmation), new {id=ShoppingCardViewModels.OrderHeader.Id});
+
+        }
+        public IActionResult OrderConfirmation(int id)
+		{
+			return View(id);
+		}
+		private double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
         {
             if (shoppingCart.Count <= 1)
             {

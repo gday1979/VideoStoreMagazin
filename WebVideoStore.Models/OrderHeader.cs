@@ -24,6 +24,8 @@
 
 		public string? OrderTotal { get; set; }
 
+		public string? OrderStatus {  get; set; }
+
 		public string? PaymentStatus { get; set; }
 		
 		public string? TrackingNumber { get; set; }
@@ -48,7 +50,8 @@
 		public string State { get; set; }
 		[Required]
 		public string PostalCode { get; set; }
-
+		[Required]
+		public string PhoneNumber { get; set; }
 
 	}
 }
