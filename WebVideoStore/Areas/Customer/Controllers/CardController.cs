@@ -108,14 +108,14 @@
 
             ShoppingCardViewModels.OrderHeader.OrderDate = DateTime.Now;
 
-            ShoppingCardViewModels.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+           ApplicationUser applicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
 
             foreach (var cart in ShoppingCardViewModels.ShoppingCartList)
             {
                 cart.Price = GetPriceBasedOnQuantity(cart);
                 ShoppingCardViewModels.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
-            if (ShoppingCardViewModels.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
+            if (applicationUser.CompanyId.GetValueOrDefault() == 0)
             {
                 ShoppingCardViewModels.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
                 ShoppingCardViewModels.OrderHeader.OrderStatus = SD.StatusPending;
@@ -140,7 +140,7 @@
                 _unitOfWork.OrderDetail.Add(orderDetail);
                 _unitOfWork.Save();
             }
-            if (ShoppingCardViewModels.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
+            if (applicationUser.CompanyId.GetValueOrDefault() == 0)
             {
             }
             return RedirectToAction(nameof(OrderConfirmation), new {id=ShoppingCardViewModels.OrderHeader.Id});
