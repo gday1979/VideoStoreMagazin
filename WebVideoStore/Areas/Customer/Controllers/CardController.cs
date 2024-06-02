@@ -2,7 +2,9 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Security.Claims;
+	using Stripe.BillingPortal;
+	using Stripe.Checkout;
+	using System.Security.Claims;
     using WebVideoStore.DataAccess.Repository.IRepository;
     using WebVideoStore.Models;
     using WebVideoStore.Models.ViewModels;
@@ -142,7 +144,37 @@
             }
             if (applicationUser.CompanyId.GetValueOrDefault() == 0)
             {
-            }
+                var domain= "https://localhost:44300/";
+				var options = new Stripe.Checkout.SessionCreateOptions
+				{
+					SuccessUrl = domain+"customer/card/OrderConfirmation?id={VideoTapeViewModels.OrderHeader.Id}",
+                    CancelUrl = domain+"customer/card/index",
+					LineItems = new      List<Stripe.Checkout.SessionLineItemOptions>(),
+					Mode = "payment",
+			};
+                foreach (var item in ShoppingCardViewModels.ShoppingCartList)
+				{
+					var sessionLineItem = new Stripe.Checkout.SessionLineItemOptions 
+					{
+						PriceData= new SessionLineItemPriceDataOptions { 
+                            UnitAmount = (long)item.Price * 100,
+                            Currency = "usd",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+							{
+								Name = item.VideoTape.Title,
+								
+							}
+                        },
+                        Quantity = item.Count,
+					};
+                    options.LineItems.Add(sessionLineItem);
+				}
+				var service = new Stripe.Checkout.SessionService();
+				Stripe.Checkout.Session session =service.Create(options);
+                _unitOfWork.OrderHeader.UpdateStripePaymentId(ShoppingCardViewModels.OrderHeader.Id, session.Id,session.PaymentIntentId );
+                _unitOfWork.Save();
+                Response.Headers.Add("Location", session.Url);
+			}
             return RedirectToAction(nameof(OrderConfirmation), new {id=ShoppingCardViewModels.OrderHeader.Id});
 
         }
