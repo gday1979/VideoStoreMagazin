@@ -124,7 +124,7 @@
             }
             else
             {
-                ShoppingCardViewModels.OrderHeader.PaymentStatus = SD.PaymentSattusDelayedPayment;
+                ShoppingCardViewModels.OrderHeader.PaymentStatus = SD.PaymentStatusDelayedPayment;
                 ShoppingCardViewModels.OrderHeader.OrderStatus = SD.StatusApproved;
             }
             _unitOfWork.OrderHeader.Add(ShoppingCardViewModels.OrderHeader);
@@ -147,8 +147,8 @@
                 var domain= "https://localhost:44300/";
 				var options = new Stripe.Checkout.SessionCreateOptions
 				{
-					SuccessUrl = domain+"customer/card/OrderConfirmation?id={VideoTapeViewModels.OrderHeader.Id}",
-                    CancelUrl = domain+"customer/card/index",
+					SuccessUrl = domain+"customer/cart/OrderConfirmation?id={VideoTapeViewModels.OrderHeader.Id}",
+                    CancelUrl = domain+"customer/cart/index",
 					LineItems = new      List<Stripe.Checkout.SessionLineItemOptions>(),
 					Mode = "payment",
 			};
@@ -180,7 +180,24 @@
         }
         public IActionResult OrderConfirmation(int id)
 		{
-			return View(id);
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == id,includeProperties:"ApplicationUser");
+            if(orderHeader.PaymentStatus != SD.PaymentStatusDelayedPayment)
+            {
+                //this is an order by customer
+                var service = new Stripe.Checkout.SessionService();
+               Stripe.Checkout.Session session= service.Get(orderHeader.SessionId);
+                if(session.PaymentStatus.ToLower()== "paid")
+				{
+				   _unitOfWork.OrderHeader.UpdateStripePaymentId(id, session.Id, session.PaymentIntentId);
+                    _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.Save();
+				}
+				
+            }
+			List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
+            _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+            _unitOfWork.Save();
+            return View(id);
 		}
 		private double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
         {
