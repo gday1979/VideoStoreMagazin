@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.Hosting;
 	using Microsoft.AspNetCore.Mvc;
     using Stripe;
+    using Stripe.Checkout;
     using WebVideoStore.DataAccess.Repository.IRepository;
 	using WebVideoStore.Models;
     using WebVideoStore.Models.ViewModels;
@@ -107,9 +108,70 @@
             {
                 _unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusCancelled);
             }
+            _unitOfWork.Save();
             TempData["Success"] = "Order Cancelled Successfully";
             return RedirectToAction(nameof(Details), new { orderId = OrderViewModels.OrderHeader.Id });
         }
+        [HttpPost]
+        [ActionName("Details")]
+        public IActionResult Details_PAY_NOW()
+        {
+            OrderViewModels.OrderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == OrderViewModels.OrderHeader.Id, includeProperties: "ApplicationUser");
+            OrderViewModels.OrderDetail = _unitOfWork.OrderDetail.GetAll(o => o.OrderHeaderId == OrderViewModels.OrderHeader.Id, includeProperties: "VideoTape");
+            var domain = "https://localhost:44300/";
+            var options = new Stripe.Checkout.SessionCreateOptions
+            {
+                SuccessUrl = domain + "admin/order/PaymentConfirmation?orderHeaderId={OrderViewModels.OrderHeader.Id}",
+                CancelUrl = domain + $"admin/order/details?orderId={OrderViewModels.OrderHeader.Id}",
+                LineItems = new List<Stripe.Checkout.SessionLineItemOptions>(),
+                Mode = "payment",
+            };
+            
+            foreach (var item in OrderViewModels.OrderDetail)
+            {
+                var sessionLineItem = new Stripe.Checkout.SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = (long)item.Price * 100,
+                        Currency = "usd",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = item.VideoTape.Title,
+
+                        }
+                    },
+                    Quantity = item.Count,
+                };
+                options.LineItems.Add(sessionLineItem);
+            }
+            var service = new Stripe.Checkout.SessionService();
+            Stripe.Checkout.Session session = service.Create(options);
+            _unitOfWork.OrderHeader.UpdateStripePaymentId(OrderViewModels.OrderHeader.Id, session.Id, session.PaymentIntentId);
+            _unitOfWork.Save();
+            Response.Headers.Add("Location", session.Url);
+            return new StatusCodeResult(303);
+        }
+        public IActionResult PaymentConfirmation(int orderHeaderId)
+        {
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == orderHeaderId);
+            if (orderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment)
+            {
+                //this is an order by customer
+                var service = new Stripe.Checkout.SessionService();
+                Stripe.Checkout.Session session = service.Get(orderHeader.SessionId);
+                if (session.PaymentStatus.ToLower() == "paid")
+                {
+                    _unitOfWork.OrderHeader.UpdateStripePaymentId(orderHeaderId, session.Id, session.PaymentIntentId);
+                    _unitOfWork.OrderHeader.UpdateStatus(orderHeaderId, orderHeader.OrderStatus, SD.PaymentStatusApproved);
+                    _unitOfWork.Save();
+                }
+
+            }
+            
+            return View(orderHeaderId);
+        }
+
         #region API CALLS
 
         [HttpGet]
