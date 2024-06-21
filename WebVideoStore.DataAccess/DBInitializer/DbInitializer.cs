@@ -69,6 +69,8 @@
 
             ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "adminzlati@gmail.com");
             _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
+
+            return;
         }
     }
 }
