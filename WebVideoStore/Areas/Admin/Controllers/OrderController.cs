@@ -166,7 +166,7 @@
                     _unitOfWork.OrderHeader.UpdateStatus(orderHeaderId, orderHeader.OrderStatus, SD.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
-
+                HttpContext.Session.Clear();
             }
             
             return View(orderHeaderId);

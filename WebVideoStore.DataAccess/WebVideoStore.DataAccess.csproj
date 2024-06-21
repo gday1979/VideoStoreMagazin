@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WebVideoStore.Models\WebVideoStore.Models.csproj" />
+    <ProjectReference Include="..\WebVideoStoreUtility\WebVideoStoreUtility.csproj" />
   </ItemGroup>
 
 </Project>
