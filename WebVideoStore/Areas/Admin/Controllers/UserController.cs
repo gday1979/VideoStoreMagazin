@@ -23,6 +23,24 @@
         {
             return View();
         }
+        public IActionResult RoleManagment(string userId)
+        { 
+           RoleManagmentViewModels roleManagmentViewModels = new RoleManagmentViewModels()
+            {
+                ApplicationUser = _db.ApplicationUsers.Include(u => u.Company).FirstOrDefault(u => u.Id == userId),
+                RoleList = _db.Roles.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }),
+                CompanyList = _db.Companies.Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                })
+            };
+            return View(roleManagmentViewModels);
+        }
         #region API CALLS
 
         [HttpGet]

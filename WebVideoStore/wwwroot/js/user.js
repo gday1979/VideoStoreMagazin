@@ -18,20 +18,31 @@ function loadDataTable() {
                 "render": function (data) {
                     var today = new Date().getTime();
                     var lockout = new Date(data.lockoutEnd).getTime();
+
                     if (lockout > today) {
-                        // user is currently locked
-                        return `<div class="w-75 btn-group" role="group">
-                              <a class="btn btn-danger mx-2" onclick=LockUnlock('${data.id}')><i class="bi bi-unlock"></i> Unlock</a>               
-                              </div>`
+                        return `
+                        <div class="text-center">
+                             <a onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
+                                    <i class="bi bi-lock-fill"></i>  Lock
+                                </a> 
+                                <a href="/admin/user/RoleManagment?userId=${data.id}" class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
+                                     <i class="bi bi-pencil-square"></i> Permission
+                                </a>
+                        </div>
+                    `
                     }
                     else {
-                        return `<div class="w-75 btn-group" role="group">
-                              <a class="btn btn-success mx-2" onclick=LockUnlock('${data.id}')><i class="bi bi-lock"></i> Lock</a>               
-                              </div>`
+                        return `
+                        <div class="text-center">
+                              <a onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
+                                    <i class="bi bi-unlock-fill"></i>  UnLock
+                                </a>
+                                <a href="/admin/user/RoleManagment?userId=${data.id}" class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
+                                     <i class="bi bi-pencil-square"></i> Permission
+                                </a>
+                        </div>
+                    `
                     }
-                    return `<div class="w-75 btn-group" role="group">
-                              <a href="/admin/company/upsert?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>               
-                              </div>`
                 },
                 "width": "25%"
             }
